@@ -1,0 +1,5 @@
+"Gene","Expression","Condition"
+"TP53",8.5,"Tumor"
+"BRCA1",8.1,"Normal"
+"MYC",9.1,"Tumor"
+"CDK2",8.1,"Normal"

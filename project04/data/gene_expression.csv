@@ -1,0 +1,6 @@
+"Gene","Expression","Condition"
+"TP53",8.5,"Tumor"
+"BRCA1",NA,"Normal"
+"EGFR",6.7,"Tumor"
+"MYC",9.1,"Tumor"
+"CDK2",NA,"Normal"
