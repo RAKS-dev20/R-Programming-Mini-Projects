@@ -1,0 +1,126 @@
+---
+title: "Differential Gene Expression Analysis of Breast Cancer"
+author: "Raksha Devi"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+## Introduction
+
+This project analyzes real breast cancer data to compare
+benign and malignant tissue samples using R Markdown.
+
+---
+
+## Load Required Libraries
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+
+#load Dataset=>
+data <- read.csv("data/gene_expression.csv")
+head(data)
+
+#Data Cleaning=>
+data_clean <- na.omit(data)
+
+```
+
+## Biological Meaning of Features
+
+The dataset contains cellular characteristics extracted from breast tissue biopsies.
+
+- Cl.thickness: Thickness of cell clusters
+- Cell.size: Uniformity of cell size
+- Cell.shape: Uniformity of cell shape
+- Marg.adhesion: Cell adhesion properties
+- Epith.c.size: Epithelial cell size
+- Bare.nuclei: Presence of bare nuclei
+- Bl.cromatin: Chromatin texture
+- Normal.nucleoli: Nucleoli appearance
+- Mitoses: Cell division activity
+- Class: 0 = Benign, 1 = Malignant
+
+## Statistical Test: cell Thickness=>
+```{r}
+t_test_result <- t.test(
+  Cl.thickness~Class,
+  data = data_clean
+)
+t_test_result
+```
+## Distribution of samples=>
+```{r}
+table(data_clean$Class)
+```
+
+# Boxplot=>
+We now **visualize** how cell thickness differs between classes.
+
+
+## cell Thickness Comparsion=>
+```{r}
+ggplot(data_clean, aes(x = factor(Class), y = Cl.thickness))+
+  geom_boxplot(fill= "steelblue")+
+  labs(
+    title = "cell Thickness in Benign vs Malignant Samples",
+    x = "Class(0=benign , 1 = Malignant )",
+    y = "Cell Thickness"
+  )+
+  theme_minimal()
+```
+## Save Cell Thickness Boxplot=>
+```{r}
+ggsave(
+  filename = "results/cell_thickness_boxplot.png",
+  width = 6,
+  height = 5
+)
+```
+## Multi-feature Conparsion
+This compares ** all cellular features at once**.
+```{r}
+data_long <- data_clean %>%
+  pivot_longer(
+    cols = Cl.thickness:Mitoses,
+    names_to = "Feature",
+    values_to = "Value"
+    
+  )
+ggplot(data_long,aes(x = factor(Class), y = Value))+
+  geom_boxplot()+
+  facet_wrap(~Feature, scales = "free")+
+  labs(
+    title = "Comparison of Cellular Features Between Classes",
+    x = "Class (0 = Benign , 1 = Malignant)",
+    y = "Feature Value"
+  )+
+  theme_minimal()
+```
+## Save Multi-Feature Plot=>
+```{r}
+ggsave(
+  filename ="results/multifeature_boxplot.png",
+  width= 10,
+  height = 6
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
